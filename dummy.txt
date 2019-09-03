@@ -1,0 +1,175 @@
+describe('Automating AngularJS file', function() {
+	var obj=require("./elements.js");
+	
+	beforeEach(function() {
+		 browser.ignoreSynchronization = true;
+		 browser.driver.manage().window().maximize();
+		console.log("Test Is Started");
+	  });
+//launch WebPage for Registration	
+  it('launch WebPage for Registration', async function() {
+   
+	obj.getRegistrationURL();    
+	obj.registration.click().then(function(){
+    	   	browser.getAllWindowHandles().then(function(handles){
+    		browser.switchTo().window(handles[1]);
+    	})
+    });
+    obj.username.sendKeys("angular");
+    obj.password.sendKeys("password");
+    obj.description.sendKeys("Naveen kumar is logging innn");
+    obj.login.click();
+    
+    var EC = protractor.ExpectedConditions;
+	browser.wait(EC.visibilityOf(obj.home), 5000);
+    
+    expect(await obj.home.getText()).toEqual('Home');
+
+    });
+//launch WebPage for MultiForm  
+  it('Launch Webpage for MultiForm', function() {
+	   
+   	obj.getMultiformURL();
+	
+	obj.multiform.click().then(function(){
+    	browser.getAllWindowHandles().then(function(handle){
+    		browser.switchTo().window(handle[2]);
+    	})
+    });
+	obj.formname.sendKeys("Naveen Kumar");
+	obj.email.sendKeys("naveen@gmail.com");
+	obj.submitbuttonOne.click().then(function(){
+    	browser.sleep(2000);
+    });
+	obj.radiobutton.click();
+	obj.submitbuttonTwo.click().then(function(){
+    	browser.sleep(2000);
+    });
+	obj.submitbuttonThree.click();
+	browser.switchTo().alert().accept();
+	  
+	});
+//Launch Webpage for Banking  
+    it('Launch Webpage for Banking', function() {
+	obj.getBankingURL();
+	obj.banking.click().then(function(){
+	    	browser.getAllWindowHandles().then(function(handle){
+	    		browser.switchTo().window(handle[3]);
+	    	})
+	    });  
+	
+	obj.managerLogin.click().then(function(){
+    	browser.sleep(2000);
+    });
+	
+	obj.addcustomer.click();
+
+	var EC = protractor.ExpectedConditions;
+	browser.wait(EC.visibilityOf(element(by.model("fName"))), 5000);
+	
+	
+	obj.cusFirstname.sendKeys("Naveen");
+	obj.cusLastname.sendKeys("Kumar");
+	obj.postalCode.sendKeys("632513");
+	obj.addCusButton.click();
+	browser.switchTo().alert().accept().then(function(){
+    	browser.sleep(2000);
+    });	
+	obj.homebutton.click();
+	obj.customerLogin.click();	
+	//wait method
+	var EC = protractor.ExpectedConditions;
+	browser.wait(EC.visibilityOf(obj.cusid), 5000);	
+	//actions class
+	browser.actions().mouseMove(obj.cusid.sendKeys("Naveen Kumar")).perform();
+	browser.actions().sendKeys(protractor.Key.ARROW_DOWN).perform();
+	browser.actions().sendKeys(protractor.Key.ENTER).perform();
+	obj.addCusButton.click().then(function(){
+    	browser.sleep(2000);
+    });
+	
+	expect(obj.welcometext.getText()).toBe("Naveen Kumar");
+	obj.welcometext.getText().then(function(text){
+		console.log(text);
+	})
+
+	});
+//Launch Webpage for calculator
+    it('Launch Webpage for calculator',function() {
+	obj.getCalculatorURL();
+		
+	obj.calculator.click().then(function(){
+    	browser.getAllWindowHandles().then(function(handle){
+   		browser.switchTo().window(handle[4]);
+	    	})
+	    });	
+
+	obj.firstinput.sendKeys("3");
+	obj.secondinput.sendKeys("5");
+	obj.gobutton.click();
+
+	});  
+//Launch Webpage for checkboxes
+    it('Launch Webpage for checkboxes', function() {
+	obj.getCheckboxURL();
+	obj.checkbox.click().then(function(){
+   	browser.getAllWindowHandles().then(function(handle){
+   	browser.switchTo().window(handle[5]);
+	    	})
+	    }); 
+//single select	
+	obj.singlecheck.click();
+
+//multiselect
+	obj.multicheck.click();
+
+
+});
+//Launch Webpage for WebTable
+    it('Launch Webpage for WebTable', function() {
+	obj.getWebtableURL();
+	obj.Webtable.click().then(function(){
+	   	browser.getAllWindowHandles().then(function(handle){
+	   	browser.switchTo().window(handle[6]);
+		    	})
+		    }); 
+	element(by.model("searchValue")).sendKeys("tom").then(function(text){
+		browser.sleep(2000);
+	});
+	
+	var email="matt@comp.com";
+	element(by.xpath("//table[@class='smart-table table table-striped']/tbody/tr[1]/td[7]")).getText().then(function(text){
+		email = text;
+		console.log(text);
+		if(email === text) {
+			console.log("Same name");
+		}
+		});
+	
+	
+//	
+//	expect(obj.Listname.getText()).toBe("Tom");
+//	obj.Listname.getText().then(function(text){
+//		console.log(text);
+//	})
+//	
+	
+	
+	
+		
+//	var EC = protractor.ExpectedConditions;
+//	browser.wait(EC.visibilityOf(element(by.css("button[ng-click*='pop()']"))), 5000);	
+//	element(by.css("button[ng-click*='pop()']")).click();
+//	var EC = protractor.ExpectedConditions;
+//	browser.wait(EC.visibilityOf( element(by.model("dataRow[column.map]"))), 5000);
+//	 
+//	element(by.model("dataRow[column.map]")).clear();
+//	element(by.model("dataRow[column.map]")).sendKeys("Naveen").then(function(){
+//	   	browser.sleep(2000);
+//	    });
+	 });
+afterEach(function() {
+    console.log("Test Is completed");
+  });
+  
+});
