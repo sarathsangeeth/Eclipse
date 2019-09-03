@@ -6,6 +6,8 @@ describe('Automating AngularJS file', function() {
 		 browser.driver.manage().window().maximize();
 		console.log("Test Is Started");
 	  });
+	  Version 1
+	  
 //launch WebPage for Registration	
   it('launch WebPage for Registration', async function() {
    
